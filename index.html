@@ -242,6 +242,18 @@
     font-size: 16px;
     color: var(--gray);
   }
+  .bracket-flow {
+    font-size: 11px;
+    color: var(--gold-light);
+    background: rgba(201,168,76,0.08);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 6px 10px;
+    margin: 10px 0;
+    text-align: center;
+    letter-spacing: 0.3px;
+  }
+  .bracket-card > .bracket-flow:first-child { margin-top: 0; margin-bottom: 14px; }
 
   @keyframes loadbar { 0%{background-position:-200px 0} 100%{background-position:200px 0} }
 
@@ -610,14 +622,63 @@ async function renderMatches() {
   el.innerHTML = html || '<div class="empty-state"><div class="empty-icon">⚽</div><div class="empty-text">試合なし</div></div>';
 }
 
+// 勝者・敗者がどの試合に進むかのマッピング（元アプリの管理画面と同じ対応関係）
+const ADVANCE_MAP = {
+  73:{nextId:89},  74:{nextId:91},  75:{nextId:90},  76:{nextId:89},
+  77:{nextId:91},  78:{nextId:90},  79:{nextId:92},  80:{nextId:92},
+  81:{nextId:94},  82:{nextId:94},  83:{nextId:93},  84:{nextId:93},
+  85:{nextId:96},  86:{nextId:95},  87:{nextId:95},  88:{nextId:96},
+  89:{nextId:97},  90:{nextId:97},  91:{nextId:99},  92:{nextId:99},
+  93:{nextId:98},  94:{nextId:98},  95:{nextId:100}, 96:{nextId:100},
+  97:{nextId:101}, 98:{nextId:101}, 99:{nextId:102}, 100:{nextId:102},
+  101:{nextId:104, loserNextId:103}, 102:{nextId:104, loserNextId:103},
+};
+// 各試合が「どの2試合の勝者同士の対戦か」（進出元）
+const FEED_MAP = {
+  89:[73,76], 90:[75,78], 91:[74,77], 92:[79,80],
+  93:[83,84], 94:[81,82], 95:[87,86], 96:[85,88],
+  97:[89,90], 98:[93,94], 99:[91,92], 100:[95,96],
+  101:[97,98], 102:[99,100],
+  103:[101,102], // 準決勝の敗者同士
+  104:[101,102], // 準決勝の勝者同士
+};
+const PHASE_SHORT = {
+  'ラウンド32':'R32', 'ラウンド16':'R16', '準々決勝':'準々決',
+  '準決勝':'準決', '3位決定戦':'3位決定戦', '決勝':'決勝',
+};
+
 function renderBracketCard(m) {
   const isFinished = m.score !== null;
   const winner = isFinished ? getWinnerFromScore(m.score, m.t1, m.t2) : null;
   const t1Cls = winner ? (winner === m.t1 ? 'winner' : 'loser') : '';
   const t2Cls = winner ? (winner === m.t2 ? 'winner' : 'loser') : '';
 
+  // 進出元（この試合が誰と誰の勝者同士の対戦か）
+  const feeders = FEED_MAP[m.id];
+  let feedHtml = '';
+  if (feeders) {
+    const label = m.id === 103 ? '敗者同士' : '勝者同士';
+    feedHtml = `<div class="bracket-flow">🔽 #${feeders[0]} と #${feeders[1]} の${label}</div>`;
+  }
+
+  // 進出先（勝者・敗者が次にどの試合へ行くか）
+  const adv = ADVANCE_MAP[m.id];
+  let advHtml = '';
+  if (adv) {
+    const nextMatch = MATCHES_MASTER.find(x => x.id === adv.nextId);
+    const nextLabel = nextMatch ? (PHASE_SHORT[nextMatch.phase] || nextMatch.phase) : '';
+    let text = `🔼 勝者 → #${adv.nextId}（${nextLabel}）`;
+    if (adv.loserNextId) {
+      const loserMatch = MATCHES_MASTER.find(x => x.id === adv.loserNextId);
+      const loserLabel = loserMatch ? (PHASE_SHORT[loserMatch.phase] || loserMatch.phase) : '';
+      text += `　敗者 → #${adv.loserNextId}（${loserLabel}）`;
+    }
+    advHtml = `<div class="bracket-flow">${text}</div>`;
+  }
+
   return `
     <div class="bracket-card">
+      ${feedHtml}
       <div class="bracket-meta">
         <div>
           <span class="bracket-id">#${m.id}</span>
@@ -638,6 +699,7 @@ function renderBracketCard(m) {
         </div>
         <div class="bracket-team ${t2Cls}">${m.t2}</div>
       </div>
+      ${advHtml}
       ${m.youtube
         ? `<a href="${m.youtube}" target="_blank" rel="noopener" style="display:block;margin-top:12px;text-align:center;background:rgba(255,0,0,0.15);border:1px solid rgba(255,80,80,0.4);border-radius:8px;padding:7px;font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;color:#FF8080;text-decoration:none;letter-spacing:0.5px">▶ ハイライトを見る</a>`
         : ''
