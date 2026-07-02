@@ -255,6 +255,42 @@
   }
   .bracket-card > .bracket-flow:first-child { margin-top: 0; margin-bottom: 14px; }
 
+  /* BRACKET PAIR（上下2試合の勝者が次の試合にまとまる表示） */
+  .bracket-pair {
+    display: flex;
+    align-items: stretch;
+    gap: 0;
+    margin-bottom: 20px;
+  }
+  .bracket-pair-cards {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    min-width: 0;
+    border-right: 3px solid var(--gold-dim);
+    padding-right: 14px;
+    margin-right: 14px;
+  }
+  .bracket-pair-cards .bracket-card { margin-bottom: 0; }
+  .bracket-pair-next {
+    flex: 0 0 62px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+  .bracket-pair-arrow { color: var(--gold); font-size: 18px; line-height: 1; margin-bottom: 2px; }
+  .bracket-pair-next-id {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--gold-light);
+    line-height: 1.2;
+  }
+  .bracket-pair-next-phase { font-size: 10px; color: var(--gray); line-height: 1.2; }
+
   @keyframes loadbar { 0%{background-position:-200px 0} 100%{background-position:200px 0} }
 
   .toast {
@@ -562,8 +598,22 @@ async function renderMatches() {
   if (!isKO) currentViewMode = 'list';
 
   if (isKO && currentViewMode === 'bracket') {
-    el.innerHTML = filtered.map(m => renderBracketCard(m)).join('') ||
-      '<div class="empty-state"><div class="empty-icon">🏆</div><div class="empty-text">試合なし</div></div>';
+    const order = BRACKET_ORDER[currentMatchPhase];
+    const ordered = order
+      ? order.map(id => matches.find(m => m.id === id)).filter(Boolean)
+      : filtered;
+    const pairable = PAIRABLE_PHASES.includes(currentMatchPhase);
+
+    if (pairable) {
+      let html = '';
+      for (let i = 0; i < ordered.length; i += 2) {
+        html += renderBracketPair(ordered[i], ordered[i + 1]);
+      }
+      el.innerHTML = html || '<div class="empty-state"><div class="empty-icon">🏆</div><div class="empty-text">試合なし</div></div>';
+    } else {
+      el.innerHTML = ordered.map(m => renderBracketCard(m)).join('') ||
+        '<div class="empty-state"><div class="empty-icon">🏆</div><div class="empty-text">試合なし</div></div>';
+    }
     return;
   }
 
@@ -647,7 +697,60 @@ const PHASE_SHORT = {
   '準決勝':'準決', '3位決定戦':'3位決定戦', '決勝':'決勝',
 };
 
-function renderBracketCard(m) {
+// トーナメント表示専用：日時順ではなく「勝者が同じ次の試合に進む」組み合わせ順
+const BRACKET_ORDER = {
+  R32: [73,76,75,78,83,84,81,82,74,77,79,80,87,86,85,88],
+  R16: [89,90,93,94,91,92,95,96],
+  QF:  [97,98,99,100],
+  SF:  [101,102],
+  F:   [104,103],
+};
+// 2試合の勝者が1つの試合にまとまる（ペア表示できる）フェーズ
+const PAIRABLE_PHASES = ['R32','R16','QF','SF'];
+
+// ペアカード1組を「上下2試合 → まとめて次の試合へ」の形で描画
+function renderBracketPair(m1, m2) {
+  if (!m1) return '';
+  if (!m2) return renderBracketCard(m1); // 奇数余りの保険
+
+  const adv = ADVANCE_MAP[m1.id]; // ペア内の2試合は必ず同じ進出先
+  const nextMatch = adv ? MATCHES_MASTER.find(x => x.id === adv.nextId) : null;
+  const nextLabel = nextMatch ? (PHASE_SHORT[nextMatch.phase] || nextMatch.phase) : '';
+
+  let nextHtml = '';
+  if (adv && adv.loserNextId) {
+    // 準決勝ペア：勝者→決勝／敗者→3位決定戦の両方を表示
+    const loserMatch = MATCHES_MASTER.find(x => x.id === adv.loserNextId);
+    const loserLabel = loserMatch ? (PHASE_SHORT[loserMatch.phase] || loserMatch.phase) : '';
+    nextHtml = `
+      <div class="bracket-pair-arrow">▶</div>
+      <div class="bracket-pair-next-id">🏆 #${adv.nextId}</div>
+      <div class="bracket-pair-next-phase">${nextLabel}</div>
+      <div class="bracket-pair-next-id" style="margin-top:8px">🥉 #${adv.loserNextId}</div>
+      <div class="bracket-pair-next-phase">${loserLabel}</div>
+    `;
+  } else if (adv) {
+    nextHtml = `
+      <div class="bracket-pair-arrow">▶</div>
+      <div class="bracket-pair-next-id">#${adv.nextId}</div>
+      <div class="bracket-pair-next-phase">${nextLabel}</div>
+    `;
+  }
+
+  return `
+    <div class="bracket-pair">
+      <div class="bracket-pair-cards">
+        ${renderBracketCard(m1, true)}
+        ${renderBracketCard(m2, true)}
+      </div>
+      <div class="bracket-pair-next">
+        ${nextHtml}
+      </div>
+    </div>
+  `;
+}
+
+function renderBracketCard(m, inPair) {
   const isFinished = m.score !== null;
   const winner = isFinished ? getWinnerFromScore(m.score, m.t1, m.t2) : null;
   const t1Cls = winner ? (winner === m.t1 ? 'winner' : 'loser') : '';
@@ -661,19 +764,21 @@ function renderBracketCard(m) {
     feedHtml = `<div class="bracket-flow">🔽 #${feeders[0]} と #${feeders[1]} の${label}</div>`;
   }
 
-  // 進出先（勝者・敗者が次にどの試合へ行くか）
-  const adv = ADVANCE_MAP[m.id];
+  // 進出先（ペア表示中は右側にまとめて出すのでカード内には出さない）
   let advHtml = '';
-  if (adv) {
-    const nextMatch = MATCHES_MASTER.find(x => x.id === adv.nextId);
-    const nextLabel = nextMatch ? (PHASE_SHORT[nextMatch.phase] || nextMatch.phase) : '';
-    let text = `🔼 勝者 → #${adv.nextId}（${nextLabel}）`;
-    if (adv.loserNextId) {
-      const loserMatch = MATCHES_MASTER.find(x => x.id === adv.loserNextId);
-      const loserLabel = loserMatch ? (PHASE_SHORT[loserMatch.phase] || loserMatch.phase) : '';
-      text += `　敗者 → #${adv.loserNextId}（${loserLabel}）`;
+  if (!inPair) {
+    const adv = ADVANCE_MAP[m.id];
+    if (adv) {
+      const nextMatch = MATCHES_MASTER.find(x => x.id === adv.nextId);
+      const nextLabel = nextMatch ? (PHASE_SHORT[nextMatch.phase] || nextMatch.phase) : '';
+      let text = `🔼 勝者 → #${adv.nextId}（${nextLabel}）`;
+      if (adv.loserNextId) {
+        const loserMatch = MATCHES_MASTER.find(x => x.id === adv.loserNextId);
+        const loserLabel = loserMatch ? (PHASE_SHORT[loserMatch.phase] || loserMatch.phase) : '';
+        text += `　敗者 → #${adv.loserNextId}（${loserLabel}）`;
+      }
+      advHtml = `<div class="bracket-flow">${text}</div>`;
     }
-    advHtml = `<div class="bracket-flow">${text}</div>`;
   }
 
   return `
