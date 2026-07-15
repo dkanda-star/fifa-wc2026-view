@@ -329,9 +329,9 @@
       <button class="dist-tab match-phase-tab" data-phase="GL" onclick="switchMatchPhase('GL')">グループ</button>
       <button class="dist-tab match-phase-tab" data-phase="R32" onclick="switchMatchPhase('R32')">R32</button>
       <button class="dist-tab match-phase-tab" data-phase="R16" onclick="switchMatchPhase('R16')">R16</button>
-      <button class="dist-tab match-phase-tab active" data-phase="QF" onclick="switchMatchPhase('QF')">準々決</button>
+      <button class="dist-tab match-phase-tab" data-phase="QF" onclick="switchMatchPhase('QF')">準々決</button>
       <button class="dist-tab match-phase-tab" data-phase="SF" onclick="switchMatchPhase('SF')">準決</button>
-      <button class="dist-tab match-phase-tab" data-phase="F" onclick="switchMatchPhase('F')">決勝</button>
+      <button class="dist-tab match-phase-tab active" data-phase="F" onclick="switchMatchPhase('F')">決勝</button>
     </div>
     <div class="view-toggle-row" id="view-toggle-row" style="display:none">
       <button class="view-toggle-btn active" data-view="list" onclick="switchViewMode('list')">📋 リスト表示</button>
@@ -434,4 +434,413 @@ const MATCHES_MASTER = [
   {id:67,date:"6/28(日) 06:00", t1:"パナマ",         t2:"イングランド",        phase:"GL第3節", group:"L", bc:"DAZN", bcClass:"bc-dazn", score:null},
   {id:68,date:"6/28(日) 06:00", t1:"クロアチア",     t2:"ガーナ",            phase:"GL第3節", group:"L", bc:"DAZN", bcClass:"bc-dazn", score:null},
   {id:69,date:"6/28(日) 08:30", t1:"コロンビア",     t2:"ポルトガル",         phase:"GL第3節", group:"K", bc:"フジ",  bcClass:"bc-fuji", score:null},
-  {id:70,date:"6/28(日) 08:30", t1
+  {id:70,date:"6/28(日) 08:30", t1:"DRコンゴ",       t2:"ウズベキスタン",      phase:"GL第3節", group:"K", bc:"DAZN", bcClass:"bc-dazn", score:null},
+  {id:71,date:"6/28(日) 11:00", t1:"ヨルダン",       t2:"アルゼンチン",        phase:"GL第3節", group:"J", bc:"NHK",  bcClass:"bc-nhk",  score:null},
+  {id:72,date:"6/28(日) 11:00", t1:"アルジェリア",   t2:"オーストリア",        phase:"GL第3節", group:"J", bc:"DAZN", bcClass:"bc-dazn", score:null},
+  // ===== ラウンド32 =====
+  {id:73,date:"6/29(月) 04:00", t1:"A組2位",          t2:"B組2位",            phase:"ラウンド32", bc:"NHK", bcClass:"bc-nhk", score:null},
+  {id:74,date:"6/30(火) 02:00", t1:"C組1位",          t2:"F組2位",            phase:"ラウンド32", bc:"フジ", bcClass:"bc-fuji", score:null},
+  {id:75,date:"6/30(火) 05:30", t1:"E組1位",          t2:"3位通過",           phase:"ラウンド32", bc:"DAZN", bcClass:"bc-dazn", score:null},
+  {id:76,date:"6/30(火) 10:00", t1:"F組1位",          t2:"C組2位",            phase:"ラウンド32", bc:"NHK", bcClass:"bc-nhk", score:null},
+  {id:77,date:"7/1(水) 02:00",  t1:"E組2位",          t2:"I組2位",            phase:"ラウンド32", bc:"日テレ",bcClass:"bc-ntv",  score:null},
+  {id:78,date:"7/1(水) 06:00",  t1:"I組1位",          t2:"3位通過",           phase:"ラウンド32", bc:"DAZN", bcClass:"bc-dazn", score:null},
+  {id:79,date:"7/1(水) 10:00",  t1:"A組1位",          t2:"3位通過",           phase:"ラウンド32", bc:"NHK", bcClass:"bc-nhk", score:null},
+  {id:80,date:"7/2(木) 01:00",  t1:"L組1位",          t2:"3位通過",           phase:"ラウンド32", bc:"DAZN", bcClass:"bc-dazn", score:null},
+  {id:81,date:"7/2(木) 05:00",  t1:"G組1位",          t2:"3位通過",           phase:"ラウンド32", bc:"NHK", bcClass:"bc-nhk", score:null},
+  {id:82,date:"7/2(木) 09:00",  t1:"D組1位",          t2:"3位通過",           phase:"ラウンド32", bc:"NHK", bcClass:"bc-nhk", score:null},
+  {id:83,date:"7/3(金) 04:00",  t1:"H組1位",          t2:"J組2位",            phase:"ラウンド32", bc:"NHK", bcClass:"bc-nhk", score:null},
+  {id:84,date:"7/3(金) 08:00",  t1:"K組2位",          t2:"L組2位",            phase:"ラウンド32", bc:"日テレ",bcClass:"bc-ntv",  score:null},
+  {id:85,date:"7/3(金) 12:00",  t1:"B組1位",          t2:"3位通過",           phase:"ラウンド32", bc:"DAZN", bcClass:"bc-dazn", score:null},
+  {id:86,date:"7/4(土) 03:00",  t1:"D組2位",          t2:"G組2位",            phase:"ラウンド32", bc:"NHK", bcClass:"bc-nhk", score:null},
+  {id:87,date:"7/4(土) 07:00",  t1:"J組1位",          t2:"H組2位",            phase:"ラウンド32", bc:"DAZN",bcClass:"bc-dazn",  score:null},
+  {id:88,date:"7/4(土) 10:30",  t1:"K組1位",          t2:"3位通過",           phase:"ラウンド32", bc:"DAZN", bcClass:"bc-dazn", score:null},
+  // ===== ラウンド16 =====
+  {id:89,date:"7/5(日) 02:00",  t1:"R32-①勝者",  t2:"R32-③勝者",  phase:"ラウンド16", bc:"NHK", bcClass:"bc-nhk", score:null},
+  {id:90,date:"7/5(日) 06:00",  t1:"R32-②勝者",  t2:"R32-⑤勝者",  phase:"ラウンド16", bc:"DAZN",bcClass:"bc-dazn",  score:null},
+  {id:91,date:"7/6(月) 05:00",  t1:"R32-④勝者",  t2:"R32-⑥勝者",  phase:"ラウンド16", bc:"NHK", bcClass:"bc-nhk", score:null},
+  {id:92,date:"7/6(月) 09:00",  t1:"R32-⑦勝者",  t2:"R32-⑧勝者",  phase:"ラウンド16", bc:"DAZN", bcClass:"bc-dazn", score:null},
+  {id:93,date:"7/7(火) 04:00",  t1:"R32-⑪勝者",  t2:"R32-⑫勝者",  phase:"ラウンド16", bc:"日テレ",bcClass:"bc-ntv",  score:null},
+  {id:94,date:"7/7(火) 09:00",  t1:"R32-⑨勝者",  t2:"R32-⑩勝者",  phase:"ラウンド16", bc:"フジ", bcClass:"bc-fuji", score:null},
+  {id:95,date:"7/8(水) 01:00",  t1:"R32-⑭勝者",  t2:"R32-⑯勝者",  phase:"ラウンド16", bc:"DAZN", bcClass:"bc-dazn", score:null},
+  {id:96,date:"7/8(水) 05:00",  t1:"R32-⑬勝者",  t2:"R32-⑮勝者",  phase:"ラウンド16", bc:"NHK", bcClass:"bc-nhk", score:null},
+  // ===== 準々決勝 =====
+  {id:97,date:"7/10(金) 05:00", t1:"R16-①勝者",  t2:"R16-②勝者",  phase:"準々決勝",  bc:"DAZN", bcClass:"bc-dazn", score:null},
+  {id:98,date:"7/11(土) 04:00", t1:"R16-③勝者",  t2:"R16-④勝者",  phase:"準々決勝",  bc:"フジ",  bcClass:"bc-fuji", score:null},
+  {id:99,date:"7/12(日) 06:00", t1:"R16-⑤勝者",  t2:"R16-⑥勝者",  phase:"準々決勝",  bc:"NHK",  bcClass:"bc-nhk",  score:null},
+  {id:100,date:"7/12(日) 10:00",t1:"R16-⑦勝者",  t2:"R16-⑧勝者",  phase:"準々決勝",  bc:"DAZN", bcClass:"bc-dazn", score:null},
+  // ===== 準決勝 =====
+  {id:101,date:"7/15(水) 04:00",t1:"QF-①勝者",   t2:"QF-②勝者",   phase:"準決勝",   bc:"日テレ",bcClass:"bc-ntv",  score:null},
+  {id:102,date:"7/16(木) 04:00",t1:"QF-③勝者",   t2:"QF-④勝者",   phase:"準決勝",   bc:"NHK",  bcClass:"bc-nhk",  score:null},
+  // ===== 3位決定戦・決勝 =====
+  {id:103,date:"7/19(日) 06:00",t1:"SF-①敗者",   t2:"SF-②敗者",   phase:"3位決定戦", bc:"NHK",  bcClass:"bc-nhk",  score:null},
+  {id:104,date:"7/20(月) 04:00",t1:"SF-①勝者",   t2:"SF-②勝者",   phase:"決勝",     bc:"NHK",  bcClass:"bc-nhk",  score:null},
+];
+
+// ====================================================
+// GAS API データレイヤー（元コミュニティと同じGAS・スプレッドシートを共用）
+// ====================================================
+const GAS_URL = 'https://script.google.com/macros/s/AKfycbxnlVsCJbt5h2QURK8Ah6bNQxsy6PXRpfd470IgOTxpRNt-pE_aKUIaS7NXde6D_enLMw/exec';
+
+let _cache = null;
+
+function gasJsonp(params) {
+  return new Promise((resolve, reject) => {
+    const cbName = '_gasCb_' + Date.now() + '_' + Math.floor(Math.random()*10000);
+    const script = document.createElement('script');
+
+    const cleanup = () => {
+      if (window[cbName]) delete window[cbName];
+      if (script.parentNode) script.parentNode.removeChild(script);
+    };
+
+    const timeout = setTimeout(() => {
+      cleanup();
+      reject(new Error('タイムアウト'));
+    }, 20000);
+
+    window[cbName] = (data) => {
+      clearTimeout(timeout);
+      cleanup();
+      resolve(data);
+    };
+
+    script.onerror = () => {
+      clearTimeout(timeout);
+      cleanup();
+      reject(new Error('スクリプト読み込みエラー'));
+    };
+
+    params.callback = cbName;
+    const qs = new URLSearchParams(params).toString();
+    script.src = `${GAS_URL}?${qs}`;
+    document.body.appendChild(script);
+  });
+}
+
+async function gasGet() {
+  if (_cache) return _cache;
+  showLoading(true);
+  try {
+    const data = await gasJsonp({ action: 'getAll' });
+    _cache = data;
+    return data;
+  } catch(e) {
+    console.error('[GAS] getAll エラー:', e);
+    showToast('通信エラー。再読み込みしてください', true);
+    return { entries: [], scores: [], teams: [], settings: [], results: [] };
+  } finally {
+    showLoading(false);
+  }
+}
+
+function showLoading(show) {
+  const el = document.getElementById('loading-bar');
+  if (el) el.style.display = show ? 'block' : 'none';
+}
+
+function getMatches() {
+  const scores = Object.fromEntries((_cache?.scores || []).map(r => [String(r.id), { score: r.score, youtube: r.youtube || '' }]));
+  const teams  = Object.fromEntries((_cache?.teams  || []).map(r => [String(r.id), { t1: r.t1, t2: r.t2 }]));
+  return MATCHES_MASTER.map(m => ({
+    ...m,
+    score:   scores[String(m.id)]?.score   ?? m.score,
+    youtube: scores[String(m.id)]?.youtube || m.youtube || '',
+    t1: teams[String(m.id)]?.t1 ?? m.t1,
+    t2: teams[String(m.id)]?.t2 ?? m.t2,
+  }));
+}
+
+// ====================================================
+// MATCHES 表示
+// ====================================================
+let currentMatchPhase = 'F';
+let currentViewMode = 'list';
+const KO_PHASES = ['R32','R16','QF','SF','F'];
+
+// スコア文字列から勝者チーム名を判定（PK・延長対応）
+function getWinnerFromScore(score, t1, t2) {
+  if (!score) return null;
+  const pkMatch = score.match(/^(\d+)-(\d+)\(PK(\d+)-(\d+)\)$/);
+  const normalMatch = score.match(/^(\d+)-(\d+)/);
+  let g1, g2, pk1 = 0, pk2 = 0;
+  if (pkMatch) {
+    g1 = +pkMatch[1]; g2 = +pkMatch[2]; pk1 = +pkMatch[3]; pk2 = +pkMatch[4];
+  } else if (normalMatch) {
+    g1 = +normalMatch[1]; g2 = +normalMatch[2];
+  } else return null;
+
+  if (g1 > g2) return t1;
+  if (g2 > g1) return t2;
+  if (pk1 > pk2) return t1;
+  if (pk2 > pk1) return t2;
+  return null;
+}
+
+async function renderMatches() {
+  if (!_cache) await gasGet();
+  const el = document.getElementById('matches-list');
+  const matches = getMatches();
+
+  const phaseMap = {
+    'GL': m => m.phase.startsWith('GL'),
+    'R32': m => m.phase === 'ラウンド32',
+    'R16': m => m.phase === 'ラウンド16',
+    'QF': m => m.phase === '準々決勝',
+    'SF': m => m.phase === '準決勝',
+    'F': m => m.phase === '3位決定戦' || m.phase === '決勝',
+  };
+  const filtered = matches.filter(phaseMap[currentMatchPhase] || (() => true));
+
+  // トグルボタンの表示切替（グループステージはリストのみ）
+  const toggleRow = document.getElementById('view-toggle-row');
+  const isKO = KO_PHASES.includes(currentMatchPhase);
+  toggleRow.style.display = isKO ? 'flex' : 'none';
+  if (!isKO) currentViewMode = 'list';
+
+  if (isKO && currentViewMode === 'bracket') {
+    const order = BRACKET_ORDER[currentMatchPhase];
+    const ordered = order
+      ? order.map(id => matches.find(m => m.id === id)).filter(Boolean)
+      : filtered;
+    const pairable = PAIRABLE_PHASES.includes(currentMatchPhase);
+
+    if (pairable) {
+      let html = '';
+      for (let i = 0; i < ordered.length; i += 2) {
+        html += renderBracketPair(ordered[i], ordered[i + 1]);
+      }
+      el.innerHTML = html || '<div class="empty-state"><div class="empty-icon">🏆</div><div class="empty-text">試合なし</div></div>';
+    } else {
+      el.innerHTML = ordered.map(m => renderBracketCard(m)).join('') ||
+        '<div class="empty-state"><div class="empty-icon">🏆</div><div class="empty-text">試合なし</div></div>';
+    }
+    return;
+  }
+
+  const grouped = {};
+  filtered.forEach(m => {
+    const dateKey = m.date.split(' ')[0];
+    if (!grouped[dateKey]) grouped[dateKey] = [];
+    grouped[dateKey].push(m);
+  });
+
+  let html = '';
+  Object.entries(grouped).forEach(([dateKey, ms]) => {
+    if (currentMatchPhase === 'GL') {
+      html += `<div style="font-family:'Barlow Condensed';font-size:11px;font-weight:700;letter-spacing:2px;color:var(--gold);text-transform:uppercase;padding:8px 0 4px;margin-top:4px">${dateKey}</div>`;
+    }
+    ms.forEach(m => {
+      const isFinished = m.score !== null;
+      const isJapan = m.japan;
+
+      html += `
+        <div class="match-card" style="${isJapan ? 'border-color:rgba(255,255,255,0.4);background:rgba(201,168,76,0.06)' : ''}">
+          <div class="match-meta">
+            <div class="match-date">
+              <span style="font-family:'Barlow Condensed';font-size:13px;color:var(--gray);margin-right:5px">#${m.id}</span>📅 ${m.date}${isJapan ? ' <span style="color:var(--gold);font-weight:700">🇯🇵</span>' : ''}
+            </div>
+            <div style="display:flex;gap:6px;align-items:center">
+              ${m.group ? `<span style="font-family:'Barlow Condensed';font-size:14px;font-weight:700;color:var(--navy);background:var(--gold);padding:2px 8px;border-radius:4px">${m.group}組</span>` : ''}
+              ${isFinished ? '<span style="font-size:13px;color:var(--green-bright);font-weight:700">終了</span>' : ''}
+              <div class="match-broadcaster ${m.bcClass}">${m.bc}</div>
+            </div>
+          </div>
+          <div class="match-teams">
+            <div class="match-team">
+              <div class="match-team-name">${m.t1}</div>
+            </div>
+            <div class="match-score-wrap">
+              ${isFinished
+                ? `<div class="match-score">${m.score}</div>`
+                : `<div class="match-score future">VS</div>`
+              }
+              <div class="match-phase">${m.phase}</div>
+            </div>
+            <div class="match-team">
+              <div class="match-team-name">${m.t2}</div>
+            </div>
+          </div>
+          ${m.youtube
+            ? `<a href="${m.youtube}" target="_blank" rel="noopener" style="display:block;margin-top:10px;text-align:center;background:rgba(255,0,0,0.15);border:1px solid rgba(255,80,80,0.4);border-radius:8px;padding:7px;font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;color:#FF8080;text-decoration:none;letter-spacing:0.5px">▶ ハイライトを見る</a>`
+            : ''
+          }
+        </div>
+      `;
+    });
+  });
+
+  el.innerHTML = html || '<div class="empty-state"><div class="empty-icon">⚽</div><div class="empty-text">試合なし</div></div>';
+}
+
+// 勝者・敗者がどの試合に進むかのマッピング（元アプリの管理画面と同じ対応関係）
+const ADVANCE_MAP = {
+  73:{nextId:89},  74:{nextId:91},  75:{nextId:90},  76:{nextId:89},
+  77:{nextId:91},  78:{nextId:90},  79:{nextId:92},  80:{nextId:92},
+  81:{nextId:94},  82:{nextId:94},  83:{nextId:93},  84:{nextId:93},
+  85:{nextId:96},  86:{nextId:95},  87:{nextId:95},  88:{nextId:96},
+  89:{nextId:97},  90:{nextId:97},  91:{nextId:99},  92:{nextId:99},
+  93:{nextId:98},  94:{nextId:98},  95:{nextId:100}, 96:{nextId:100},
+  97:{nextId:101}, 98:{nextId:101}, 99:{nextId:102}, 100:{nextId:102},
+  101:{nextId:104, loserNextId:103}, 102:{nextId:104, loserNextId:103},
+};
+// 各試合が「どの2試合の勝者同士の対戦か」（進出元）
+const FEED_MAP = {
+  89:[73,76], 90:[75,78], 91:[74,77], 92:[79,80],
+  93:[83,84], 94:[81,82], 95:[87,86], 96:[85,88],
+  97:[89,90], 98:[93,94], 99:[91,92], 100:[95,96],
+  101:[97,98], 102:[99,100],
+  103:[101,102], // 準決勝の敗者同士
+  104:[101,102], // 準決勝の勝者同士
+};
+const PHASE_SHORT = {
+  'ラウンド32':'R32', 'ラウンド16':'R16', '準々決勝':'準々決',
+  '準決勝':'準決', '3位決定戦':'3位決定戦', '決勝':'決勝',
+};
+
+// トーナメント表示専用：日時順ではなく「勝者が同じ次の試合に進む」組み合わせ順
+const BRACKET_ORDER = {
+  R32: [73,76,75,78,83,84,81,82,74,77,79,80,87,86,85,88],
+  R16: [89,90,93,94,91,92,95,96],
+  QF:  [97,98,99,100],
+  SF:  [101,102],
+  F:   [104,103],
+};
+// 2試合の勝者が1つの試合にまとまる（ペア表示できる）フェーズ
+const PAIRABLE_PHASES = ['R32','R16','QF','SF'];
+
+// ペアカード1組を「上下2試合 → まとめて次の試合へ」の形で描画
+function renderBracketPair(m1, m2) {
+  if (!m1) return '';
+  if (!m2) return renderBracketCard(m1); // 奇数余りの保険
+
+  const adv = ADVANCE_MAP[m1.id]; // ペア内の2試合は必ず同じ進出先
+  const nextMatch = adv ? MATCHES_MASTER.find(x => x.id === adv.nextId) : null;
+  const nextLabel = nextMatch ? (PHASE_SHORT[nextMatch.phase] || nextMatch.phase) : '';
+
+  let nextHtml = '';
+  if (adv && adv.loserNextId) {
+    // 準決勝ペア：勝者→決勝／敗者→3位決定戦の両方を表示
+    const loserMatch = MATCHES_MASTER.find(x => x.id === adv.loserNextId);
+    const loserLabel = loserMatch ? (PHASE_SHORT[loserMatch.phase] || loserMatch.phase) : '';
+    nextHtml = `
+      <div class="bracket-pair-arrow">▶</div>
+      <div class="bracket-pair-next-id">🏆 #${adv.nextId}</div>
+      <div class="bracket-pair-next-phase">${nextLabel}</div>
+      <div class="bracket-pair-next-id" style="margin-top:8px">🥉 #${adv.loserNextId}</div>
+      <div class="bracket-pair-next-phase">${loserLabel}</div>
+    `;
+  } else if (adv) {
+    nextHtml = `
+      <div class="bracket-pair-arrow">▶</div>
+      <div class="bracket-pair-next-id">#${adv.nextId}</div>
+      <div class="bracket-pair-next-phase">${nextLabel}</div>
+    `;
+  }
+
+  return `
+    <div class="bracket-pair">
+      <div class="bracket-pair-cards">
+        ${renderBracketCard(m1, true)}
+        ${renderBracketCard(m2, true)}
+      </div>
+      <div class="bracket-pair-next">
+        ${nextHtml}
+      </div>
+    </div>
+  `;
+}
+
+function renderBracketCard(m, inPair) {
+  const isFinished = m.score !== null;
+  const winner = isFinished ? getWinnerFromScore(m.score, m.t1, m.t2) : null;
+  const t1Cls = winner ? (winner === m.t1 ? 'winner' : 'loser') : '';
+  const t2Cls = winner ? (winner === m.t2 ? 'winner' : 'loser') : '';
+
+  // 進出元（この試合が誰と誰の勝者同士の対戦か）
+  const feeders = FEED_MAP[m.id];
+  let feedHtml = '';
+  if (feeders) {
+    const label = m.id === 103 ? '敗者同士' : '勝者同士';
+    feedHtml = `<div class="bracket-flow">🔽 #${feeders[0]} と #${feeders[1]} の${label}</div>`;
+  }
+
+  // 進出先（ペア表示中は右側にまとめて出すのでカード内には出さない）
+  let advHtml = '';
+  if (!inPair) {
+    const adv = ADVANCE_MAP[m.id];
+    if (adv) {
+      const nextMatch = MATCHES_MASTER.find(x => x.id === adv.nextId);
+      const nextLabel = nextMatch ? (PHASE_SHORT[nextMatch.phase] || nextMatch.phase) : '';
+      let text = `🔼 勝者 → #${adv.nextId}（${nextLabel}）`;
+      if (adv.loserNextId) {
+        const loserMatch = MATCHES_MASTER.find(x => x.id === adv.loserNextId);
+        const loserLabel = loserMatch ? (PHASE_SHORT[loserMatch.phase] || loserMatch.phase) : '';
+        text += `　敗者 → #${adv.loserNextId}（${loserLabel}）`;
+      }
+      advHtml = `<div class="bracket-flow">${text}</div>`;
+    }
+  }
+
+  return `
+    <div class="bracket-card">
+      ${feedHtml}
+      <div class="bracket-meta">
+        <div>
+          <span class="bracket-id">#${m.id}</span>
+          <span class="bracket-date">📅 ${m.date}</span>
+        </div>
+        <div style="display:flex;gap:6px;align-items:center">
+          ${isFinished ? '<span style="font-size:12px;color:var(--green-bright);font-weight:700">終了</span>' : ''}
+          <div class="match-broadcaster ${m.bcClass}">${m.bc}</div>
+        </div>
+      </div>
+      <div class="bracket-teams">
+        <div class="bracket-team ${t1Cls}">${m.t1}</div>
+        <div class="bracket-score">
+          ${isFinished
+            ? `<div class="bracket-score-val">${m.score}</div>`
+            : `<div class="bracket-score-val future">VS</div>`
+          }
+        </div>
+        <div class="bracket-team ${t2Cls}">${m.t2}</div>
+      </div>
+      ${advHtml}
+      ${m.youtube
+        ? `<a href="${m.youtube}" target="_blank" rel="noopener" style="display:block;margin-top:12px;text-align:center;background:rgba(255,0,0,0.15);border:1px solid rgba(255,80,80,0.4);border-radius:8px;padding:7px;font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;color:#FF8080;text-decoration:none;letter-spacing:0.5px">▶ ハイライトを見る</a>`
+        : ''
+      }
+    </div>
+  `;
+}
+
+function switchMatchPhase(phase) {
+  currentMatchPhase = phase;
+  document.querySelectorAll('.match-phase-tab').forEach(b => {
+    b.classList.toggle('active', b.dataset.phase === phase);
+  });
+  renderMatches();
+}
+
+function switchViewMode(mode) {
+  currentViewMode = mode;
+  document.querySelectorAll('.view-toggle-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.view === mode);
+  });
+  renderMatches();
+}
+
+function showToast(msg, error=true) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast show';
+  setTimeout(() => { t.classList.remove('show'); }, 3000);
+}
+
+// ====================================================
+window.addEventListener('DOMContentLoaded', () => {
+  renderMatches();          // マスターデータで即表示
+  gasGet().then(renderMatches); // 最新スコア・対戦カードを取得して更新
+});
+</script>
+</body>
+</html>
